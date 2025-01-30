@@ -69,11 +69,12 @@
             background-color: #333;
             color: white;
             text-align: center;
-            padding: 10px;
+            padding: 30px;
         }
 
         .modal-title {
             font-family: 'Georgia', serif;
+            font-size: 1.5rem;
             margin-bottom: 20px;
         }
 
@@ -114,8 +115,6 @@
             height: auto;
             border-radius: 15px;
             object-fit: cover;
-            border: 2px solid #c01f1f;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
         }
     </style>
 </head>
@@ -170,15 +169,20 @@
         const modal = document.getElementById('sweetMessageModal');
         const video = document.getElementById('modal-video');
 
-        // When the modal is shown, play the video
+        // Play video only after the modal has been shown (user interaction)
         modal.addEventListener('shown.bs.modal', function () {
-            video.play();
+            // Delay video play slightly to ensure user interaction has been captured
+            setTimeout(() => {
+                video.play().catch(error => {
+                    console.error('Video play error: ', error); // Log any play errors
+                });
+            }, 200); // 200ms delay before playing
         });
 
-        // When the modal is hidden, pause the video and reset it
+        // Stop video when the modal is hidden
         modal.addEventListener('hidden.bs.modal', function () {
             video.pause();
-            video.currentTime = 0; // Reset video to the beginning
+            video.currentTime = 0; // Reset the video to start
         });
 
         async function fetchVerses() {
